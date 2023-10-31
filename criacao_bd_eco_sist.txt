@@ -1,0 +1,81 @@
+CREATE DATABASE bd_ecosystem2; 
+
+USE bd_ecosystem2;
+
+CREATE TABLE tb_tipoUsuario (
+id_tipoUsuario BINARY(16) NOT NULL,
+_tipo_usuario  INT  (10) NOT NULL,
+PRIMARY KEY (id_tipoUsuario)
+);
+
+
+CREATE TABLE tb_endereco (
+id_endereco BINARY(16) NOT NULL,
+logradouro VARCHAR(255) not null,
+numero VARCHAR(255) not null,
+bairro VARCHAR(255) not null,
+cidade VARCHAR(255) not null,
+estado VARCHAR(255) not null,
+cep VARCHAR(10) not null,
+PRIMARY KEY (id_endereco)
+);
+
+
+CREATE TABLE tb_usuario (
+id_usuario BINARY(16) NOT NULL,
+id_tipoUsuario BINARY(16) NOT NULL,
+id_endereco BINARY(16) NOT NULL,
+nome VARCHAR(255) NOT NULL,
+email VARCHAR(255) NOT NULL UNIQUE,
+genero VARCHAR(255),
+cnpj VARCHAR(255) NOT NULL UNIQUE,
+cpf VARCHAR(255) NOT NULL UNIQUE,
+senha VARCHAR(255)  NOT NULL,
+telefone VARCHAR(15) NOT NULL,
+PRIMARY KEY (id_usuario),
+FOREIGN KEY (id_tipoUsuario) REFERENCES tb_tipoUsuario (id_tipoUsuario),
+FOREIGN KEY (id_endereco) REFERENCES tb_endereco(id_endereco)
+);
+
+
+CREATE TABLE tb_Categoria (
+id_categoria BINARY(16) NOT NULL,
+nome VARCHAR(255) NOT NULL,
+PRIMARY KEY (id_categoria)
+);
+
+
+CREATE TABLE tb_Produto (
+id_produto BINARY(16) NOT NULL,
+id_categoria BINARY(16) NOT NULL,
+nome  VARCHAR(255) NOT NULL,
+quantidade int  (10) not null,
+PRIMARY KEY (id_produto)
+FOREIGN KEY (id_categoria) REFERENCES tb_categoria (id_categoria),
+
+);
+
+
+
+CREATE TABLE tb_Anuncio (
+id_anuncio BINARY(16) NOT NULL,
+id_usuario BINARY(16) NOT NULL,
+id_produto BINARY(16) NOT NULL,
+obs varchar(255),
+PRIMARY KEY (id_anuncio),
+FOREIGN KEY (id_usuario) REFERENCES tb_usuario (id_usuario),
+FOREIGN KEY (id_produto) REFERENCES tb_Produto (id_produto)
+);
+
+
+
+CREATE TABLE tb_coleta (
+id_coleta BINARY(16) NOT NULL,
+id_anuncio BINARY(16) NOT NULL,
+id_usuario BINARY(16) NOT NULL,
+horario datetime,
+status VARCHAR (255),
+FOREIGN KEY (id_anuncio)  REFERENCES tb_Anuncio (id_anuncio),
+FOREIGN KEY (id_usuario)   REFERENCES tb_Usuario (id_usuario),
+PRIMARY KEY(id_coleta)
+);
